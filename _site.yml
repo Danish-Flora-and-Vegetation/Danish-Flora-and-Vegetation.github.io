@@ -5,5 +5,9 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
+    - text: "Activities"
+      icon: fa-gear
+      menu:
+      - text: "Cursos"
+      - text: "Most Common Species in Denmark"
+        href: MostCommon/MostCommon.html
