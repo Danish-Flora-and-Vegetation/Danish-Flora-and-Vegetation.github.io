@@ -48,7 +48,8 @@ PerSpeciesPlot <- frekvens2 %>%
   arrange(desc(Occurrences)) %>% 
   rename(Family = LatFam,
          Species = LatArt,
-         Danish_name = NavnDansk)
+         Danish_name = NavnDansk) %>% 
+  tibble::rowid_to_column(var = "Ranking")
 
 PerFamily <- frekvens2 %>%
   dplyr::select(LatArt, LatFam) %>%
@@ -91,6 +92,7 @@ PerSpeciesFamiliesPlotly <- PerSpeciesPlot %>%
 
 FamNames <- PerSpeciesFamiliesPlotly$Family %>% unique() %>% sort()
 
+
 df <- PerSpeciesFamiliesPlotly
 ```
 
@@ -100,7 +102,7 @@ In this document we are characterizing the most common species in Denmark, in or
 
 ## Number of species per plot
 
-If we take into account in how many plots a species has been detected at list once, this is the list of the species in Denmark ordered by the number of occurrences it has, note that using the search bar you can search for only one family. You can also download this list or any other table within this document with the buttons above, as well as set the number of species to be shown.
+If we take into account in how many plots a species has been detected at list once, this is the list of the species in Denmark ordered by the number of occurrences it has, note that using the search bar you can search for only one family. You can also download this list or any other table within this document with the buttons above, as well as set the number of species to be shown, you can see 100 most common species in red letters and yellow background.
 
 ```{r SpeciesPerPlot}
 
@@ -110,7 +112,11 @@ datatable(PerSpeciesPlot, extensions = 'Buttons',
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
                            lengthMenu = list(c(10,25,50,-1),
-                                             c(10,25,50,"All"))))
+                                             c(10,25,50,"All")))) %>%
+  formatStyle("Species",'Ranking',
+    color = styleInterval(100, c('red', 'white')),
+    backgroundColor = styleInterval(100, c('yellow', 'gray'))
+  )
 ```
 
 You can also explore the following interactive plot, you can choose to show all families, or click on any of the ones which has one of the 500 most common species to get an overview of their composition, and check the number of occurrence per species, by hovering over the plot.
