@@ -8,6 +8,6 @@ navbar:
     - text: "Activities"
       icon: fa-gear
       menu:
-      - text: "Cursos"
+      - text: "Activities"
       - text: "Most Common Species in Denmark"
         href: MostCommon/MostCommon.html
