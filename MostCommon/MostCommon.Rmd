@@ -113,9 +113,9 @@ datatable(PerSpeciesPlot, extensions = 'Buttons',
                                              c(10,25,50,"All"))))
 ```
 
-You can also explore the following interactive plot, you can choose to show all families, or one of the top ten families with the most species, and check the number of occurrence per species, by hovering over the barplot.
+You can also explore the following interactive plot, you can choose to show all families, or click on any of the ones which has one of the 500 most common species to get an overview of their composition, and check the number of occurrence per species, by hovering over the plot.
 
-You can play with the controls and zoom in and out, or copy download a copy of the plot using the camera icon.
+You can play with the controls wher you can download the images or the data within the graph.
 
 ```{r}
 library(highcharter)
@@ -175,151 +175,151 @@ hchart(dout, type = "treemap",
 
 
 ```{r ThePlot}
-library(plotly)
-
-plot_ly() %>%
-  add_trace(data = df[df$Family == FamNames[1],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar',
-            name = FamNames[1],
-            visible = T,
-            inherit = F) %>%
-  add_trace(data = df[df$Family == FamNames[2],]%>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[2],
-            visible = F,
-            inherit = F) %>%
-  add_trace(data = df[df$Family == FamNames[3],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[3],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[4],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[4],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[5],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[5],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[6],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[6],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[7],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[7],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[8],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[8],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[9],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[9],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[10],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[10],
-            visible = F,
-            inherit = F) %>%
-    add_trace(data = df[df$Family == FamNames[11],] %>% 
-              mutate(Species = fct_reorder(Species, desc(Occurrences))), 
-            x = ~Species, 
-            y = ~Occurrences, 
-            type = 'bar', 
-            name = FamNames[11],
-            visible = F,
-            inherit = F) %>%
-  layout(
-    xaxis = list(
-      nticks = 0,
-      showticklabels=F
-    ),
-    updatemenus = list(
-      list(y = .7,     
-           buttons = list(
-             list(method = "update",
-                  args = list(list(visible = c(T, F, F, F, F, F, F, F, F, F, F)),
-                              list(title = FamNames[1])),
-                  label = FamNames[1]),
-             list(method = "update",
-                  args = list(list(visible = c(F, T, F, F, F, F, F, F, F, F, F)),
-                              list(title = FamNames[2])),
-                  label = FamNames[2]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, T, F, F, F, F, F, F, F, F)),
-                              list(title = FamNames[3])),
-                  label = FamNames[3]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, T, F, F, F, F, F, F, F)),
-                              list(title = FamNames[4])),
-                  label = FamNames[4]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, F, T, F, F, F, F, F, F)),
-                              list(title = FamNames[5])),
-                  label = FamNames[5]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, F, F, T, F, F, F, F, F)),
-                              list(title = FamNames[6])),
-                  label = FamNames[6]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, F, F, F, T, F, F, F, F)),
-                              list(title = FamNames[7])),
-                  label = FamNames[7]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, F, F, F, F, T, F, F, F)),
-                              list(title = FamNames[8])),
-                  label = FamNames[8]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, F, F, F, F, F, T, F, F)),
-                              list(title = FamNames[9])),
-                  label = FamNames[9]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, F, F, F, F, F, F, T, F)),
-                              list(title = FamNames[10])),
-                  label = FamNames[10]),
-             list(method = "update",
-                  args = list(list(visible = c(F, F, F, F, F, F, F, F, F, F, T)),
-                              list(title = FamNames[11])),
-                  label = FamNames[11])
-           )))
-  )
+# library(plotly)
+# 
+# plot_ly() %>%
+#   add_trace(data = df[df$Family == FamNames[1],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar',
+#             name = FamNames[1],
+#             visible = T,
+#             inherit = F) %>%
+#   add_trace(data = df[df$Family == FamNames[2],]%>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[2],
+#             visible = F,
+#             inherit = F) %>%
+#   add_trace(data = df[df$Family == FamNames[3],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[3],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[4],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[4],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[5],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[5],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[6],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[6],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[7],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[7],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[8],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[8],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[9],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[9],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[10],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[10],
+#             visible = F,
+#             inherit = F) %>%
+#     add_trace(data = df[df$Family == FamNames[11],] %>% 
+#               mutate(Species = fct_reorder(Species, desc(Occurrences))), 
+#             x = ~Species, 
+#             y = ~Occurrences, 
+#             type = 'bar', 
+#             name = FamNames[11],
+#             visible = F,
+#             inherit = F) %>%
+#   layout(
+#     xaxis = list(
+#       nticks = 0,
+#       showticklabels=F
+#     ),
+#     updatemenus = list(
+#       list(y = .7,     
+#            buttons = list(
+#              list(method = "update",
+#                   args = list(list(visible = c(T, F, F, F, F, F, F, F, F, F, F)),
+#                               list(title = FamNames[1])),
+#                   label = FamNames[1]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, T, F, F, F, F, F, F, F, F, F)),
+#                               list(title = FamNames[2])),
+#                   label = FamNames[2]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, T, F, F, F, F, F, F, F, F)),
+#                               list(title = FamNames[3])),
+#                   label = FamNames[3]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, T, F, F, F, F, F, F, F)),
+#                               list(title = FamNames[4])),
+#                   label = FamNames[4]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, F, T, F, F, F, F, F, F)),
+#                               list(title = FamNames[5])),
+#                   label = FamNames[5]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, F, F, T, F, F, F, F, F)),
+#                               list(title = FamNames[6])),
+#                   label = FamNames[6]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, F, F, F, T, F, F, F, F)),
+#                               list(title = FamNames[7])),
+#                   label = FamNames[7]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, F, F, F, F, T, F, F, F)),
+#                               list(title = FamNames[8])),
+#                   label = FamNames[8]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, F, F, F, F, F, T, F, F)),
+#                               list(title = FamNames[9])),
+#                   label = FamNames[9]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, F, F, F, F, F, F, T, F)),
+#                               list(title = FamNames[10])),
+#                   label = FamNames[10]),
+#              list(method = "update",
+#                   args = list(list(visible = c(F, F, F, F, F, F, F, F, F, F, T)),
+#                               list(title = FamNames[11])),
+#                   label = FamNames[11])
+#            )))
+#   )
 
 ```
 
