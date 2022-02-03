@@ -1,7 +1,7 @@
-name: "my-website"
+name: "Danish Flora and Vegetation"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "Danish Flora and Vegetation"
   left:
     - text: "Home"
       href: index.html

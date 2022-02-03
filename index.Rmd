@@ -1,9 +1,28 @@
 ---
-title: "My Website"
+title: "Danish Flora and Vegetation"
 ---
 
-Hello, Website!
+# Description of qualifications
 
-For more information about simple R Markdown websites, please read the documentation at https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html.
+## Objective of the course:
 
-Please also note that simple R Markdown sites are _not_ based on **blogdown**. They are probably good for websites with only a few Rmd documents. For larger-scale and more sophisticated websites (such as blogs), you may want to use **blogdown** instead: https://github.com/rstudio/blogdown.
+The general aim of the course is that the participants should acquire the fundamental knowledge and skills necessary for nature management in Denmark (or neighboring countries), such as knowledge of plant species, relevant ecological theory and the principles underlying nature management in Denmark.
+
+## Learning outcomes and competences:
+
+The participants should be able to:
+
+* Identify the most important Danish plant species and describe their ecology and habitat.
+
+* Identify and describe the most important Danish habitat types and discuss their occurrence in relation to ecological factors, including human influence.
+
+* Explain the most important factors controlling the composition of plant communities at local to landscape scale.
+
+* Explain and discuss fundamental principles of ecological theory relevant for nature management and it’s practical application for nature management in Denmark.
+
+# Contents
+
+In lectures and seminars selected topics in vegetation ecology are discussed, including vegetation and plant communities, the niche concept, functional plant types and plant strategies, and the importance of dispersal and species pool in relation to plant community assembly. During the course each student will make one assignment combining ecological theory with aspects of its practical application in nature management. During practical exercises, excursions and theoretical exercises vegetation data are collected, described, analyzed and compared with an existing large dataset for Danish habitats. Through these activities the student will acquire knowledge of Danish flora and achieve an understanding of the distribution and occurrence of species and plant communities in relation to ecological factors. In a series of seminars, often given by guest lecturers from implementing institutions, important issues and problems related to nature conservation and management are discussed, including the EU habitat directive and the Danish NOVANA scheme.
+
+*Instructor:* Signe Normand, Anne Blach Overgaard
+*Course coordinator:* Signe Normand, signe.normand@bio.au.dk
