@@ -117,6 +117,63 @@ You can also explore the following interactive plot, you can choose to show all 
 
 You can play with the controls and zoom in and out, or copy download a copy of the plot using the camera icon.
 
+```{r}
+library(highcharter)
+PerSpeciesHCAll2 <- PerSpeciesPlot %>% 
+  ungroup() %>% 
+  dplyr::select(Species, Family, Occurrences) %>% 
+  mutate(All = "All") %>% 
+  slice_max(order_by = Occurrences, n = 500)
+
+
+lvl_opts <-  list(
+  list(
+    level = 1,
+    borderWidth = 0,
+    borderColor = "transparent",
+    dataLabels = list(
+      enabled = TRUE,
+      align = "left",
+      verticalAlign = "top",
+      style = list(
+        fontSize = "12px", 
+        textOutline = FALSE,
+        color = "white",
+        fontWeight = "normal"
+      )
+    )
+  ),
+  list(
+    level = 2,
+    borderWidth = 0,
+    borderColor = "transparent",
+    colorVariation = list(key = "brightness", to = 0.250),
+    dataLabels = list(enabled = FALSE),
+    style = list(
+      fontSize = "8px",
+      textOutline = FALSE, 
+      color = "white", 
+      fontWeight = "normal"
+    )
+  )
+)
+
+dout <- data_to_hierarchical(PerSpeciesHCAll2, c(Family, Species), Occurrences)
+
+hchart(dout, type = "treemap",
+       # levelIsConstant = FALSE,
+       allowDrillToNode = TRUE,
+       levels = lvl_opts,
+       tooltip = list(valueDecimals = FALSE))  %>%
+  hc_exporting(
+    enabled = TRUE, # always enabled
+    filename = "custom-file-name"
+  )
+
+```
+
+
+
 ```{r ThePlot}
 library(plotly)
 
