@@ -349,13 +349,9 @@ datatable(PerFamily, extensions = 'Buttons',
 Again, in the following plot, play around with the graph, to check the distribution of the species number, zoom in and out, and explore the families with most and least amount of species
 
 ```{r}
-ggplot(PerFamily, aes(x = reorder(Family, desc(Species_number)), y = Species_number)) + geom_col() + theme_bw() + labs(x = "Family", y = "Speceis Number") + theme(axis.text.x = element_blank(), axis.ticks =element_blank())
+plotly::ggplotly(ggplot(PerFamily, aes(x = reorder(Family, desc(Species_number)), y = Species_number)) + geom_col() + theme_bw() + labs(x = "Family", y = "Speceis Number") + theme(axis.text.x = element_blank(), axis.ticks =element_blank()))
 ```
 
-
-```{r}
-
-```
 
 
 ## Number of species per Genus
