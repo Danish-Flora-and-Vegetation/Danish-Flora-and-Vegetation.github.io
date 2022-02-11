@@ -11,7 +11,7 @@
 
 
 
-<title>Danish Flora and Vegetation</title>
+<title>Calculating Artscore</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -276,32 +276,31 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Danish Flora and Vegetation</h1>
+<h1 class="title toc-ignore">Calculating Artscore</h1>
 
 </div>
 
 
-<div id="description-of-qualifications" class="section level1">
-<h1>Description of qualifications</h1>
-<div id="objective-of-the-course" class="section level2">
-<h2>Objective of the course:</h2>
-<p>The general aim of the course is that the participants should acquire the fundamental knowledge and skills necessary for nature management in Denmark (or neighboring countries), such as knowledge of plant species, relevant ecological theory and the principles underlying nature management in Denmark.</p>
+<div id="why-we-calculate-artscore" class="section level2">
+<h2>Why we calculate artscore</h2>
+<p>Every species has a different value depending on the habitat it is, in that sense in a forest the same species might not be a valuable as a in a grassland or a dune. Artscore intends to estimate that.</p>
 </div>
-<div id="learning-outcomes-and-competences" class="section level2">
-<h2>Learning outcomes and competences:</h2>
-<p>The participants should be able to:</p>
-<ul>
-<li><p>Identify the most important Danish plant species and describe their ecology and habitat.</p></li>
-<li><p>Identify and describe the most important Danish habitat types and discuss their occurrence in relation to ecological factors, including human influence.</p></li>
-<li><p>Explain the most important factors controlling the composition of plant communities at local to landscape scale.</p></li>
-<li><p>Explain and discuss fundamental principles of ecological theory relevant for nature management and it’s practical application for nature management in Denmark.</p></li>
-</ul>
-</div>
-</div>
-<div id="contents" class="section level1">
-<h1>Contents</h1>
-<p>In lectures and seminars selected topics in vegetation ecology are discussed, including vegetation and plant communities, the niche concept, functional plant types and plant strategies, and the importance of dispersal and species pool in relation to plant community assembly. During the course each student will make one assignment combining ecological theory with aspects of its practical application in nature management. During practical exercises, excursions and theoretical exercises vegetation data are collected, described, analyzed and compared with an existing large dataset for Danish habitats. Through these activities the student will acquire knowledge of Danish flora and achieve an understanding of the distribution and occurrence of species and plant communities in relation to ecological factors. In a series of seminars, often given by guest lecturers from implementing institutions, important issues and problems related to nature conservation and management are discussed, including the EU habitat directive and the Danish NOVANA scheme.</p>
-<p><em>Instructor:</em> Signe Normand, Bjarke Madsen <em>Course coordinator:</em> Signe Normand, <a href="mailto:signe.normand@bio.au.dk" class="email">signe.normand@bio.au.dk</a></p>
+<div id="how-do-we-calculate-artscore" class="section level2">
+<h2>How do we calculate artscore</h2>
+<p>m = Adjusted average score for the test field.</p>
+<p>a(b) = Number (a) contribution species (b) (number with species score above 0). Coded as a_b in the data frame.</p>
+<p>s = Artsum calculated as follows:</p>
+<p><span class="math display">\[s = m \times a(b)\]</span></p>
+<p>m(a) = Average adjusted mean score, coded as m_a in the data frame</p>
+<p>A(s) = Artcore index, coded as A_s in the data frame calculated as follows</p>
+<p><span class="math display">\[A(s) = \frac{1}{(1+e^{m(a)} \times e^{1.60(1-m)})}\]</span></p>
+<p>a(t) = number of plant species in the sample field (without mosses etc.), coded as a_t in the data frame</p>
+<p>n(a) = average number of species in the habitat type d = Diversity parameter calculated as follows :</p>
+<p><span class="math display">\[d = 0.8 \times m(a) \times n(a)\]</span></p>
+<p>A(d) = Artsdiversitetsindex calculated as follows:</p>
+<p><span class="math display">\[A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))\]</span></p>
+<p>Artsindex = Species index (weighting of species score and species diversity index)</p>
+<p>Value a data frame with the intermediate calculations and the Artscore</p>
 </div>
 
 

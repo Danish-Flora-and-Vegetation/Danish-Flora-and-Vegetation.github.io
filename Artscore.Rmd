@@ -1,0 +1,49 @@
+---
+title: "Calculating Artscore"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = F, error = F, message = F)
+
+library(dplyr)
+```
+
+## Why we calculate artscore
+
+Every species has a different value depending on the habitat it is, in that sense in a forest the same species might not be a valuable as a in a grassland or a dune. Artscore intends to estimate that.
+
+## How do we calculate artscore
+
+m = Adjusted average score for the test field.
+
+a(b) = Number (a) contribution species (b) (number with species score above 0). Coded as a_b in the data frame.
+
+s = Artsum calculated as follows:
+
+$$s = m \times a(b)$$
+
+m(a) = Average adjusted mean score, coded as m_a in the data frame
+
+A(s) = Artcore index, coded as A_s in the data frame calculated as follows
+
+$$A(s) = \frac{1}{(1+e^{m(a)} \times e^{1.60(1-m)})}$$
+
+a(t) = number of plant species in the sample field (without mosses etc.), coded as a_t in the data frame
+
+n(a) = average number of species in the habitat type d = Diversity parameter calculated as follows :
+
+$$d = 0.8 \times m(a) \times n(a)$$
+
+A(d) = Artsdiversitetsindex calculated as follows:
+
+$$A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))$$
+
+Artsindex = Species index (weighting of species score and species diversity index)
+
+Value
+a data frame with the intermediate calculations and the Artscore
+
+
+
+
