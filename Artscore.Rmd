@@ -5,45 +5,129 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = F, error = F, message = F)
-
 library(dplyr)
+library(Artscore)
+library(kableExtra)
+
+Species <- readRDS("Higher_Range_Species.rds")
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy()
 ```
 
 ## Why we calculate artscore
 
-Every species has a different value depending on the habitat it is, in that sense in a forest the same species might not be a valuable as a in a grassland or a dune. Artscore intends to estimate that.
+Every species has a different value depending on the habitat it is, in that sense in a forest the same species might not be a valuable as a in a grassland or a dune. Artscore intends to estimate the natural value of a community in a given habitat type, considering how natural that species is to that particular environment, thus it gives lower values to invasive species. Furthermore, some species have different values depending on their environment. In the following table you can see some species and the value they add to each environment:
+
+```{r}
+kableExtra::kbl(Species, caption = "Artscore for 10 species in different environments, this are 10 of the most variable species in the scores they can get") %>% 
+  kableExtra::kable_paper() %>% kableExtra::scroll_box(height = 800, width = 500)
+```
+
 
 ## How do we calculate artscore
 
-m = Adjusted average score for the test field.
+A tool we have develped to calculate Artscore is the `Artscore` package in r, in order to install it you need to have the devtools package installed and then use the following code:
 
-a(b) = Number (a) contribution species (b) (number with species score above 0). Coded as a_b in the data frame.
+```{r install, eval=FALSE, echo=TRUE}
+devtools::install_github("Sustainscapes/Artscore")
+```
 
-s = Artsum calculated as follows:
+
+In order to calculate the Artscore we need the list of species that we found in the field and the habitat type in which we collected it, as seen in the table bellow, the same species does not have the same value in different environments as an example we will use a list of species within the "Græs-indlandsklit ("Grass inland dune")" habitat which in average has 9.4 species in its community, we will draw 10 species at random a couple of times and calculate the artscore:
+
+```{r Dataframe}
+set.seed(2022)
+Community_1 <- sample(Species_List$Scientific_name, 10) %>% 
+  sort()
+
+Community_2 <- Species$Scientific_name %>% 
+  sort()
+
+DF <- data.frame(Community_1 = Community_1, Community_2 = Community_2)
+
+kableExtra::kbl(DF, caption = "List of species for our 10 random communities") %>% 
+  kableExtra::kable_paper() %>% kableExtra::scroll_box(height = 800, width = 500) %>% kable_styling(full_width = F)
+```
+
+With the Artscore package, the calculation is quite simple, we do it by using the following function, here it is for Community 1:
+
+```{r, echo=TRUE, eval = F}
+Artscore(ScientificName = c("Armeria maritima ssp. maritima", "Campanula glomerata var. glomerata", 
+"Campanula rapunculoides", "Dipsacus pilosus", "Hippophaë rhamnoides", "Honckenya peploides", "Juncus squarrosus", "Leymus arenarius", 
+"Sagina maritima", "Stellaria nemorum ssp. nemorum"), 
+Habitat_name = "Græs-indlandsklit")
+```
+
+```{r}
+Result_1 <- Artscore(ScientificName = c("Armeria maritima ssp. maritima", "Campanula glomerata var. glomerata", 
+"Campanula rapunculoides", "Dipsacus pilosus", "Hippophaë rhamnoides", "Honckenya peploides", "Juncus squarrosus", "Leymus arenarius", 
+"Sagina maritima", "Stellaria nemorum ssp. nemorum"), 
+Habitat_name = "Græs-indlandsklit")
+
+kableExtra::kbl(Result_1, caption = "Result for the first community") %>% 
+  kableExtra::kable_paper()  %>% kable_styling(full_width = F)
+
+```
+
+
+So we just type the list of species and the habitat name, but what do all the values in between mean?
+
+First we calculate $m$ which is the average of the artcore, this is coded as m in the results of our function
+
+$${\displaystyle m=\frac {a_{1}+a_{2}+\cdots +a_{n}}{n}}$$
+here $n$ is the number of species, and $a_n$ is the artscore of the nth species, in our example above the result is `r Result_1$m`.
+
+Then we calculate $a(b)$ Which is the number of species with an Artscore value above 0 in our example above the result is `r Result_1$a_b`, coded as a_b in the table above.
+
+then we calculate
+
+$s$ = Artsum calculated as follows:
 
 $$s = m \times a(b)$$
+Then we get $m(a)$ from a table, this value is the mean of the averages of all $m$ calculated over several sites, this is coded as m_a in our table, in out case this is `r Result_1$m_a`
 
-m(a) = Average adjusted mean score, coded as m_a in the data frame
-
-A(s) = Artcore index, coded as A_s in the data frame calculated as follows
+We then calculate the Artcore index $A(s)$ whish is calculated in the following way, and coded as A_s in our table:
 
 $$A(s) = \frac{1}{(1+e^{m(a)} \times e^{1.60(1-m)})}$$
 
-a(t) = number of plant species in the sample field (without mosses etc.), coded as a_t in the data frame
+$a(t)$ = number of plant species in the sample field (without mosses etc.), coded as a_t in the data frame
 
-n(a) = average number of species in the habitat type d = Diversity parameter calculated as follows :
+$n(a)$ = average number of species in the habitat type d = Diversity parameter calculated as follows :
 
 $$d = 0.8 \times m(a) \times n(a)$$
 
-A(d) = Artsdiversitetsindex calculated as follows:
+$A(d)$ = Artsdiversitetsindex calculated as follows:
 
 $$A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))$$
 
 Artsindex = Species index (weighting of species score and species diversity index)
 
-Value
-a data frame with the intermediate calculations and the Artscore
+We can them compare the index we have calculated against the second community, which would be the following:
+
+```{r, echo=TRUE, eval = F}
+Artscore(ScientificName = c("Alchemilla vulgaris coll.", "Alnus glutinosa", "Cotoneaster niger", 
+"Elytrigia atherica x juncea", "Euphorbia cyparissias", "Juncus alpinoarticulatus ssp. nodulosus", 
+"Knautia arvensis", "Nymphoides peltata", "Quercus rubra", "Reseda lutea"), 
+Habitat_name = "Græs-indlandsklit")
+```
+
+```{r}
+Result_2 <- Artscore(ScientificName = c("Alchemilla vulgaris coll.", "Alnus glutinosa", "Cotoneaster niger", 
+"Elytrigia atherica x juncea", "Euphorbia cyparissias", "Juncus alpinoarticulatus ssp. nodulosus", 
+"Knautia arvensis", "Nymphoides peltata", "Quercus rubra", "Reseda lutea"), 
+Habitat_name = "Græs-indlandsklit")
+
+Result_1$Community <- "Comunity 1"
+Result_2$Community <- "Comunity 2"
+
+Results <- bind_rows(Result_1, Result_2)
+
+kableExtra::kbl(Results, caption = "Results for both communities") %>% 
+  kableExtra::kable_paper()  %>% kable_styling(full_width = F)
+
+```
 
 
-
-
+So as we see in this example the Artsindex of the first community is
