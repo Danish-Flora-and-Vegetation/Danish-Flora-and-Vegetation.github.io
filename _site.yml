@@ -13,3 +13,5 @@ navbar:
         href: MostCommon/MostCommon.html
       - text: "Calculating Artscore"
         href: Artscore.html
+      - text: "CRS strategies"
+        href: CRSTables.html

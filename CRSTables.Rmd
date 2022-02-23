@@ -1,0 +1,89 @@
+---
+title: "CRS_Tables_and_plot"
+output: html_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, warning = FALSE)
+
+library(crosstalk)
+library(leaflet)
+library(DT)
+library(plotly)
+library(tidyverse)
+# Wrap data frame in SharedData
+
+Test <- readRDS("CRS_Final.rds") %>% 
+  dplyr::sample_n(size = 1000)
+
+axis <- function(title) {
+  
+  list(
+    
+    title = title,
+    
+    titlefont = list(
+      
+      size = 20
+      
+    ),
+    
+    tickfont = list(
+      
+      size = 15
+      
+    ),
+    
+    tickcolor = 'rgba(0,0,0,0)',
+    
+    ticklen = 5
+    
+  )
+  
+}
+
+
+sd <- SharedData$new(Test)
+```
+
+
+```{r plot, echo = FALSE, message=FALSE, warning=FALSE, error=FALSE}
+# Create a filter input
+filter_slider("leaf_area", "Leaf Area", sd, column=~leaf_area, step=0.1, width=250)
+filter_slider("leaf_dry_mass", "Leaf dry mass", sd, column=~leaf_dry_mass, step=0.1, width=250)
+filter_slider("leaf_fresh_mass", "Leaf fresh mass", sd, column=~leaf_fresh_mass, step=0.1, width=250)
+
+# Use SharedData like a dataframe with Crosstalk-enabled widgets
+bscols(
+  plot_ly(sd) %>% 
+  add_trace(
+  type = 'scatterternary',
+  mode = 'markers',
+  a = ~C,
+  b = ~R,
+  c = ~S,
+  text = ~Label,
+  marker = list( 
+    symbol = "100",
+    color = Test$RGB,
+    size = 5,
+    line = list('width' = 2)
+  )
+) %>% layout(
+  title = "",
+  ternary = list(
+    sum = 100,
+    aaxis = axis('Competitor'),
+    baxis = axis('Ruderal'),
+    caxis = axis('Stress tolerator')
+  )
+), datatable(sd, extensions = 'Buttons',
+          caption = 'Table 1: Species and their characteristics.',
+            filter = "top",
+            options = list(dom = 'Blfrtip',
+                           buttons = c('copy', 'csv', 'excel'),
+                           lengthMenu = list(c(10,25,50,-1),
+                                             c(10,25,50,"All"))))
+)
+```
+
