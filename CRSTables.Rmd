@@ -12,7 +12,7 @@ Plants just as any other organisms, cannot optimize for everything. Resources ar
 
 **Ruderals:** This species are mostly annual species that colonize recently disturbed areas. 
 
-Of course most species are not one or another. In the graph and table bellow, you can filter either by selecting in the graph, or filtering with the sliders, and see what species are left. Try to use the sliders to find what characteristics are more common in each of the strategies.
+Of course most species are not one or another. In the graph and table bellow, you can filter either by selecting in the graph, or filtering with the sliders, and see what species are left. Try to use the sliders to find what characteristics are more common in each of the strategies. This calculations have been made using the method described in @pierce2017global
 
 
 ```{r, include=FALSE}
