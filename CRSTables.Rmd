@@ -13,8 +13,12 @@ library(plotly)
 library(tidyverse)
 # Wrap data frame in SharedData
 
+set.seed(2022)
+
 Test <- readRDS("CRS_Final.rds") %>% 
-  dplyr::sample_n(size = 1000)
+  dplyr::sample_n(size = 1000) %>% 
+  dplyr::select("Species", "leaf_area", "leaf_dry_mass", "leaf_fresh_mass", "C", "R", "S", "RGB", "Strategy", "Label") %>% 
+  mutate_if(is.numeric, ~round(.x, 2))
 
 axis <- function(title) {
   
@@ -77,11 +81,11 @@ bscols(
     baxis = axis('Ruderal'),
     caxis = axis('Stress tolerator')
   )
-), datatable(sd, extensions = 'Buttons',
+), datatable(sd, extensions = 'Buttons', width = 200,
           caption = 'Table 1: Species and their characteristics.',
             filter = "top",
             options = list(dom = 'Blfrtip',
-                           buttons = c('copy', 'csv', 'excel'),
+                           buttons = c('copy', 'csv', 'excel', 'colvis'),
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All"))))
 )
