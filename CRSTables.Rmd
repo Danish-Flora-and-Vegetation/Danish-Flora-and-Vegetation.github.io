@@ -1,7 +1,19 @@
 ---
-title: "CRS_Tables_and_plot"
+title: "CRS triangle"
 output: html_document
+bibliography: Biblio.bib
 ---
+
+Plants just as any other organisms, cannot optimize for everything. Resources are limited, and thus, there is a trade off among their characteristics [@grime1977evidence]. Three main strategies have been proposed:
+
+**Competitors:** This species live in areas where there is little abiotic stress, they specialize in outcompiting other species.
+
+**Stress tolerators:** This species usually are in areas where other species can hardly survive. They can be found in areas such as high altitude, extreme pH levels among other areas.
+
+**Ruderals:** This species are mostly annual species that colonize recently disturbed areas. 
+
+Of course most species are not one or another. In the graph and table bellow, you can filter either by selecting in the graph, or filtering with the sliders, and see what species are left. Try to use the sliders to find what characteristics are more common in each of the strategies.
+
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, warning = FALSE)
@@ -58,7 +70,7 @@ filter_slider("leaf_dry_mass", "Leaf dry mass", sd, column=~leaf_dry_mass, step=
 filter_slider("leaf_fresh_mass", "Leaf fresh mass", sd, column=~leaf_fresh_mass, step=0.1, width=250)
 
 # Use SharedData like a dataframe with Crosstalk-enabled widgets
-bscols(
+bscols(widths = c(7, 5),
   plot_ly(sd) %>% 
   add_trace(
   type = 'scatterternary',
