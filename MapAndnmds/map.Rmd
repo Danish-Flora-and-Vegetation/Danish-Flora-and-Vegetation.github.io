@@ -1,0 +1,85 @@
+---
+title: "Untitled"
+author: "Derek Corcoran"
+date: "2/17/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(leaflet)
+library(tidyverse)
+library(htmltools)
+library(bsplus)
+library(vegan)
+library(crosstalk)
+library(sf)
+
+Test <- read_rds("/home/derek/Documents/Site_Selection_DK/AllData4.rds") %>% 
+  dplyr::filter(Dataset == "Novana") %>% 
+  separate(col = "ID", into = c("ID", "plot"))
+
+saveRDS(Test, "Spatial.rds")
+```
+
+
+```{r cars}
+Artlist <- data.table::fread("artsliste.csv") %>%
+  as.data.frame() 
+
+library(readr)
+
+frekvens2 <- read_csv("alledata-frekvens2.txt") %>%
+  janitor::clean_names() %>%
+  as_tibble()
+
+frekvens2$species <- str_split(frekvens2$specieslist, ",")
+
+frekvens2 <- frekvens2 %>%
+    dplyr::select(-specieslist) %>%
+    unnest(species) %>%
+    mutate(species = str_trim(species, side = "both"),
+           species = str_remove_all(species, "\\}"),
+           site = str_remove_all(site, "\\{"),
+           species = as.numeric(species)) %>%
+    rename(ArtID = species) %>%
+    left_join(Artlist) %>% 
+    mutate(plot = as.character(plot)) %>% dplyr::select(plot, year, LatArt) %>% 
+  dplyr::filter(year < (lubridate::year(lubridate::ymd(Sys.Date())) + 1)) %>% 
+  group_by(plot) %>% 
+  dplyr::filter(year == max(year))  %>% 
+  dplyr::filter(LatArt != "") 
+#  left_join(Test)
+
+PlotRichness <- frekvens2 %>% ungroup() %>% 
+  group_by(plot) %>% 
+  summarise(Richness = n())
+
+saveRDS(PlotRichness, "PlotRichness.rds")
+
+PlotCommunity <- frekvens2 %>% 
+  ungroup() %>% 
+  mutate(Pres = 1) %>% 
+  dplyr::distinct() %>% 
+  dplyr::filter(LatArt != "") %>% 
+  pivot_wider(names_from = LatArt, values_from = Pres, values_fill = 0) %>% 
+  janitor::clean_names()
+
+saveRDS(PlotCommunity, "PlotCommunity.rds")
+
+a <- bs_button("She Loves You", button_type = "primary") %>%
+  bs_attach_collapse("id_yeah")
+
+b <- bs_collapse(id = "id_yeah", "Yeah Yeah Yeah")
+#> <div class="collapse" id="id_yeah">Yeah Yeah Yeah</div>
+
+#> <button class="btn btn-primary" data-toggle="collapse" data-target="#id_yeah">She Loves You</button>
+
+content <- paste(sep = "<br/>",
+  a,b
+)
+
+leaflet() %>% addTiles() %>%
+  addMarkers(-122.327298, 47.597131, popup = content)
+```
+
