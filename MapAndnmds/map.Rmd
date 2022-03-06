@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, error = FALSE)
 library(leaflet)
 library(tidyverse)
 library(htmltools)
@@ -14,6 +14,7 @@ library(bsplus)
 library(vegan)
 library(crosstalk)
 library(sf)
+library(DT)
 
 Test <- read_rds("/home/derek/Documents/Site_Selection_DK/AllData4.rds") %>% 
   dplyr::filter(Dataset == "Novana") %>% 
@@ -23,7 +24,7 @@ saveRDS(Test, "Spatial.rds")
 ```
 
 
-```{r cars}
+```{r cars, cache=TRUE, include=FALSE}
 Artlist <- data.table::fread("artsliste.csv") %>%
   as.data.frame() 
 
@@ -67,19 +68,60 @@ PlotCommunity <- frekvens2 %>%
 
 saveRDS(PlotCommunity, "PlotCommunity.rds")
 
-a <- bs_button("She Loves You", button_type = "primary") %>%
-  bs_attach_collapse("id_yeah")
+PlotSppList <- frekvens2 %>% 
+  ungroup() %>% 
+  nest(Species = LatArt)
 
-b <- bs_collapse(id = "id_yeah", "Yeah Yeah Yeah")
-#> <div class="collapse" id="id_yeah">Yeah Yeah Yeah</div>
+set.seed(2021)
+PlotSppNames <- frekvens2 %>% 
+    ungroup() %>% 
+    group_by(plot) %>% 
+#    summarise(Species = paste(LatArt, collapse = "<br/> "), n = paste("Number of species", n())) 
+  summarise(Species = paste(LatArt, collapse = ", "), n = paste("Number of species", n()), Richness = n()) %>% 
+  filter(complete.cases(.)) %>% 
+  slice_sample(n = 1000)
 
-#> <button class="btn btn-primary" data-toggle="collapse" data-target="#id_yeah">She Loves You</button>
+Final <- list()
 
-content <- paste(sep = "<br/>",
-  a,b
+for(i in 1:nrow(PlotSppNames)){
+  Button <- bs_button(PlotSppNames$n[i], button_type = "primary") %>% bs_attach_collapse(paste0("id_spp", i))
+SppList = bs_collapse(id = paste0("id_spp", i), PlotSppNames$Species[i])
+
+Final[[i]] = paste(sep = "<br/>", Button, SppList)
+}
+
+Final <- Final %>% purrr::reduce(c)
+
+PlotSppNames$Species <- Final
+```
+
+
+```{r Table}
+
+result <- Test %>% 
+  right_join(PlotSppNames) %>% dplyr::select(plot, Species, MajorHab, Richness) %>% 
+  st_transform("+proj=longlat +datum=WGS84") %>% 
+  dplyr::distinct()
+
+PlotSppList <- PlotSppList %>% dplyr::filter(plot %in% result$plot)
+
+saveRDS(PlotSppList, "TestSppList.rds")
+
+#leaflet(result) %>% addTiles() %>% 
+#  addMarkers(popup = PlotSppNames$Species)
+
+#DT::datatable(result, escape = F)
+
+sd <- SharedData$new(result)
+
+# Create a filter input
+filter_slider("Richness", "Species Richness", sd, column=~Richness, step=1, width=250)
+
+# Use SharedData like a dataframe with Crosstalk-enabled widgets
+bscols(
+  leaflet(sd) %>% addTiles() %>% addCircleMarkers(popup = ~Species),
+  DT::datatable(sd, escape = F, extensions="Scroller", style="bootstrap", class="compact", width="100%",
+    options=list(deferRender=TRUE, scrollY=300, scroller=TRUE))
 )
-
-leaflet() %>% addTiles() %>%
-  addMarkers(-122.327298, 47.597131, popup = content)
 ```
 
