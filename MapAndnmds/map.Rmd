@@ -15,6 +15,7 @@ library(vegan)
 library(crosstalk)
 library(sf)
 library(DT)
+library(plotly)
 
 Test <- read_rds("/home/derek/Documents/Site_Selection_DK/AllData4.rds") %>% 
   dplyr::filter(Dataset == "Novana") %>% 
@@ -98,10 +99,14 @@ PlotSppNames$Species <- Final
 
 ```{r Table}
 
+NMDS <- readRDS("NMDSplots.rds")
+
 result <- Test %>% 
   right_join(PlotSppNames) %>% dplyr::select(plot, Species, MajorHab, Richness) %>% 
+  right_join(NMDS) %>% 
   st_transform("+proj=longlat +datum=WGS84") %>% 
-  dplyr::distinct()
+  dplyr::distinct() %>% 
+  dplyr::select(-year, -CheckPoint)
 
 PlotSppList <- PlotSppList %>% dplyr::filter(plot %in% result$plot)
 
@@ -123,5 +128,9 @@ bscols(
   DT::datatable(sd, escape = F, extensions="Scroller", style="bootstrap", class="compact", width="100%",
     options=list(deferRender=TRUE, scrollY=300, scroller=TRUE))
 )
+
+ggplotly(ggplot(sd, aes(x = MDS1, y = MDS2)) + geom_point(aes(color = Class)) + theme_bw())
+
+
 ```
 

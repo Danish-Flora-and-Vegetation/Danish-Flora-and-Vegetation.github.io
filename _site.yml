@@ -15,3 +15,5 @@ navbar:
         href: Artscore.html
       - text: "CRS strategies"
         href: CRSTables.html
+      - text: "Ellemberg valus"
+        href: MapAndnmds/map.html
