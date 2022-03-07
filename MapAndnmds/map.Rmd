@@ -127,11 +127,12 @@ filter_checkbox("Class", "Class", sd, ~Class, inline = TRUE)
 # Use SharedData like a dataframe with Crosstalk-enabled widgets
 bscols(
   leaflet(sd) %>% addTiles() %>% addCircleMarkers(popup = ~Species, color = ~pal(Class)),
-  ggplotly(ggplot(sd, aes(x = MDS1, y = MDS2)) + geom_point(aes(color = Class)) + theme_bw())
+  ggplotly(ggplot(sd, aes(x = PC1, y = PC2)) + geom_point(aes(color = Class)) + theme_bw())
 )
 
 DT::datatable(sd, escape = F, extensions = c('Buttons', 'Scroller'), width="100%",
-    options=list(scrollY=300, scroller=TRUE, buttons = c('copy', 'csv', 'excel')),fillContainer = T)
+    options=list(scrollY=300, scroller=TRUE, buttons = c('copy', 'csv', 'excel')),fillContainer = T) %>%
+    formatRound(columns=c("L", "T", "K", "F", "R", "N", "S", "MDS1", "MDS2", "PC1", "PC2", "PC3"), digits=2)
 
 ```
 
