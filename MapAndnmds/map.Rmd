@@ -1,7 +1,5 @@
 ---
-title: "Untitled"
-author: "Derek Corcoran"
-date: "2/17/2022"
+title: "Ellemberg values"
 output: html_document
 ---
 
@@ -110,6 +108,8 @@ result <- Test %>%
 
 PlotSppList <- PlotSppList %>% dplyr::filter(plot %in% result$plot)
 
+pal <- colorFactor(palette = c("#F8766D", "#A3A500", "#00BF7D", "#00B0F6", "#E76BF3"), domain = c("A", "B", "C", "D", "E"))
+
 saveRDS(PlotSppList, "TestSppList.rds")
 
 #leaflet(result) %>% addTiles() %>% 
@@ -126,7 +126,7 @@ filter_checkbox("Class", "Class", sd, ~Class, inline = TRUE)
 ))
 # Use SharedData like a dataframe with Crosstalk-enabled widgets
 bscols(
-  leaflet(sd) %>% addTiles() %>% addCircleMarkers(popup = ~Species),
+  leaflet(sd) %>% addTiles() %>% addCircleMarkers(popup = ~Species, color = ~pal(Class)),
   DT::datatable(sd, escape = F, extensions="Scroller", style="bootstrap", class="compact", width="100%",
     options=list(deferRender=TRUE, scrollY=300, scroller=TRUE))
 )
