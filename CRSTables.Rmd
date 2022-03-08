@@ -23,14 +23,25 @@ library(leaflet)
 library(DT)
 library(plotly)
 library(tidyverse)
+library(caret)
+library(sf)
 # Wrap data frame in SharedData
 
 set.seed(2022)
 
-Test <- readRDS("CRS_Final.rds") %>% 
-  dplyr::sample_n(size = 1000) %>% 
+
+Test <- readRDS("CRS_Per_Site.rds") %>% 
+ dplyr::slice_sample(prop = 0.25) %>% 
   dplyr::select("Species", "leaf_area", "leaf_dry_mass", "leaf_fresh_mass", "C", "R", "S", "RGB", "Strategy", "Label") %>% 
-  mutate_if(is.numeric, ~round(.x, 2))
+  mutate_if(is.numeric, ~round(.x, 2)) %>% 
+  rename(plot = Species)
+
+Spatial <- readRDS("MapAndnmds/Spatial.rds") %>% 
+  dplyr::select(plot, habtype, MajorHab) %>% 
+  dplyr::filter(plot %in% Test$plot) %>% 
+  st_transform("+proj=longlat +datum=WGS84") %>% 
+  right_join(Test) %>% 
+  distinct()
 
 axis <- function(title) {
   
@@ -59,19 +70,19 @@ axis <- function(title) {
 }
 
 
-sd <- SharedData$new(Test)
+
+sd1 <- SharedData$new(Spatial, ~plot)
+
 ```
 
 
 ```{r plot, echo = FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # Create a filter input
-filter_slider("leaf_area", "Leaf Area", sd, column=~leaf_area, step=0.1, width=250)
-filter_slider("leaf_dry_mass", "Leaf dry mass", sd, column=~leaf_dry_mass, step=0.1, width=250)
-filter_slider("leaf_fresh_mass", "Leaf fresh mass", sd, column=~leaf_fresh_mass, step=0.1, width=250)
-
+filter_checkbox("Strategy", "Strategy", sd1, ~Strategy, inline = T)
+filter_checkbox("Major Habitar", "MajorHab", sd1, ~MajorHab, inline = T)
 # Use SharedData like a dataframe with Crosstalk-enabled widgets
-bscols(widths = c(7, 5),
-  plot_ly(sd) %>% 
+bscols(#widths = c(7, 5),
+  plot_ly(sd1) %>% 
   add_trace(
   type = 'scatterternary',
   mode = 'markers',
@@ -81,7 +92,7 @@ bscols(widths = c(7, 5),
   text = ~Label,
   marker = list( 
     symbol = "100",
-    color = Test$RGB,
+    color = Spatial$RGB,
     size = 5,
     line = list('width' = 2)
   )
@@ -93,13 +104,15 @@ bscols(widths = c(7, 5),
     baxis = axis('Ruderal'),
     caxis = axis('Stress tolerator')
   )
-), datatable(sd, extensions = 'Buttons', width = 200,
-          caption = 'Table 1: Species and their characteristics.',
+), leaflet(sd1) %>% addTiles() %>% addCircleMarkers(color = Spatial$RGB)
+)
+
+datatable(sd1, extensions = c('Buttons', 'Scroller'), width="100%",
+          caption = 'Table 1: Plots and their characteristics.',
             filter = "top",
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel', 'colvis'),
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All"))))
-)
 ```
 
