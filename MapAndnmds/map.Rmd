@@ -122,7 +122,8 @@ sd <- SharedData$new(result)
 # Create a filter input
 bscols(list(
 filter_slider("Richness", "Species Richness", sd, column=~Richness, step=1, width=250),
-filter_checkbox("Class", "Class", sd, ~Class, inline = TRUE)
+filter_checkbox("Class", "Class", sd, ~Class, inline = TRUE),
+filter_checkbox("Major Habitar", "MajorHab", sd, ~MajorHab, inline = T)
 ))
 # Use SharedData like a dataframe with Crosstalk-enabled widgets
 bscols(
