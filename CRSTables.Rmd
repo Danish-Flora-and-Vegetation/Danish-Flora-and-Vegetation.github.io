@@ -31,7 +31,7 @@ set.seed(2022)
 
 
 Test <- readRDS("CRS_Per_Site.rds") %>% 
- dplyr::slice_sample(prop = 0.25) %>% 
+ dplyr::slice_sample(prop = 0.05) %>% 
   dplyr::select("Species", "leaf_area", "leaf_dry_mass", "leaf_fresh_mass", "C", "R", "S", "RGB", "Strategy", "Label") %>% 
   mutate_if(is.numeric, ~round(.x, 2)) %>% 
   rename(plot = Species)
@@ -116,3 +116,54 @@ datatable(sd1, extensions = c('Buttons', 'Scroller'), width="100%",
                                              c(10,25,50,"All"))))
 ```
 
+
+
+## Composition by site
+
+```{r, BySite}
+Spatial2 <- Spatial %>% 
+  as.data.frame() %>% 
+  dplyr::select("plot", "C", "R", "S", "RGB", "Label") %>% 
+  mutate(Size = 30)
+
+
+PlotCRSBySpecies <- readRDS("PlotCRSBySpecies.rds") %>% 
+  dplyr::filter(plot %in% Spatial$plot) %>% 
+  rename(Species = LatArt) %>% 
+  dplyr::select(Species, plot, C, R, S, RGB, Label) %>%
+  mutate(Size = 5) %>% 
+  bind_rows(Spatial2)
+```
+
+
+```{r}
+SD <- SharedData$new(PlotCRSBySpecies, ~plot)
+
+filter_select("plot", "plot", SD, ~plot, multiple = F)
+  
+plot_ly(SD) %>% 
+  add_trace(
+  type = 'scatterternary',
+  mode = 'markers',
+  a = ~C,
+  b = ~R,
+  c = ~S,
+  text = ~Label,
+  marker = list( 
+    symbol = "100",
+    color = ~RGB,
+    size = ~Size,
+    line = list('width' = 2)
+  )
+) %>% layout(
+  title = "",
+  ternary = list(
+    sum = 100,
+    aaxis = axis('Competitor'),
+    baxis = axis('Ruderal'),
+    caxis = axis('Stress tolerator')
+  )
+)
+```
+
+# References
