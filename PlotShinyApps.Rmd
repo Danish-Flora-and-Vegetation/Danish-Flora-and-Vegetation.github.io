@@ -1,0 +1,15 @@
+---
+title: "Test app"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+#knitr::include_app(url = #"http://18.159.101.5/shiny/rstudio/sample-apps/hello/", height = #"1000px")
+```
+
+
+<iframe src="http://18.159.101.5/shiny/rstudio/sample-apps/SummaryApp/" style="border: 0; position:absolute; top:5%; left:0; right:0; bottom:0; width:100%; height:95%">

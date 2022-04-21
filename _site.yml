@@ -17,3 +17,10 @@ navbar:
         href: CRSTables.html
       - text: "Ellemberg values"
         href: MapAndnmds/map.html
+    - text: "Apps"
+      icon: fa-gear
+      menu:
+      - text: "Apps"
+      - text: "Plot comparison app"
+        href: PlotShinyApps.html
+

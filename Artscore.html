@@ -13,7 +13,7 @@
 
 <title>Calculating Artscore</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -68,6 +68,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -88,6 +89,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -240,7 +244,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -253,7 +257,7 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-gear"></span>
      
     Activities
@@ -273,6 +277,21 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="MapAndnmds/map.html">Ellemberg values</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Apps
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Apps</li>
+    <li>
+      <a href="PlotShinyApps.html">Plot comparison app</a>
     </li>
   </ul>
 </li>
@@ -1460,7 +1479,7 @@ elm, skærm-
 <h2>How do we calculate artscore</h2>
 <p>A tool we have develped to calculate Artscore is the <code>Artscore</code> package in r, in order to install it you need to have the devtools package installed and then use the following code:</p>
 <pre class="r"><code>devtools::install_github(&quot;Sustainscapes/Artscore&quot;)</code></pre>
-<p>In order to calculate the Artscore we need the list of species that we found in the field and the habitat type in which we collected it, as seen in the table bellow, the same species does not have the same value in different environments as an example we will use a list of species within the “Græs-indlandsklit (”Grass inland dune“)” habitat which in average has 9.4 species in its community, we will draw 10 species at random a couple of times and calculate the artscore:</p>
+<p>In order to calculate the Artscore we need the list of species that we found in the field and the habitat type in which we collected it, as seen in the table bellow, the same species does not have the same value in different environments as an example we will use a list of species within the “Græs-indlandsklit (”Grass inland dune”)” habitat which in average has 9.4 species in its community, we will draw 10 species at random a couple of times and calculate the artscore:</p>
 <div class="table" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800; overflow-x: scroll; width:500;  width: auto !important; margin-left: auto; margin-right: auto;">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
 <caption>
