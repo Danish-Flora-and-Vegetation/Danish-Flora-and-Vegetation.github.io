@@ -13,7 +13,7 @@
 
 <title>Calculating Artscore</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -149,11 +149,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -182,8 +186,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -191,16 +195,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -255,6 +252,9 @@ $(document).ready(function () {
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="Book/_book/index.html">Book</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -318,11 +318,20 @@ $(document).ready(function () {
 </script>
 <div id="why-we-calculate-artscore" class="section level2">
 <h2>Why we calculate artscore</h2>
-<p>Every species has a different value depending on the habitat it is, in that sense in a forest the same species might not be a valuable as a in a grassland or a dune. Artscore intends to estimate the natural value of a community in a given habitat type, considering how natural that species is to that particular environment, thus it gives lower values to invasive species. Furthermore, some species have different values depending on their environment. In the following table you can see some species and the value they add to each environment:</p>
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800; overflow-x: scroll; width:500; ">
+<p>Every species has a different value depending on the habitat it is,
+in that sense in a forest the same species might not be a valuable as a
+in a grassland or a dune. Artscore intends to estimate the natural value
+of a community in a given habitat type, considering how natural that
+species is to that particular environment, thus it gives lower values to
+invasive species. Furthermore, some species have different values
+depending on their environment. In the following table you can see some
+species and the value they add to each environment:</p>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800; overflow-x: scroll; width:500; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
 <caption>
-Artscore for 10 species in different environments, this are 10 of the most variable species in the scores they can get
+Artscore for 10 species in different environments, this are 10 of the
+most variable species in the scores they can get
 </caption>
 <thead>
 <tr>
@@ -1477,10 +1486,19 @@ elm, skærm-
 </div>
 <div id="how-do-we-calculate-artscore" class="section level2">
 <h2>How do we calculate artscore</h2>
-<p>A tool we have develped to calculate Artscore is the <code>Artscore</code> package in r, in order to install it you need to have the devtools package installed and then use the following code:</p>
+<p>A tool we have develped to calculate Artscore is the
+<code>Artscore</code> package in r, in order to install it you need to
+have the devtools package installed and then use the following code:</p>
 <pre class="r"><code>devtools::install_github(&quot;Sustainscapes/Artscore&quot;)</code></pre>
-<p>In order to calculate the Artscore we need the list of species that we found in the field and the habitat type in which we collected it, as seen in the table bellow, the same species does not have the same value in different environments as an example we will use a list of species within the “Græs-indlandsklit (”Grass inland dune”)” habitat which in average has 9.4 species in its community, we will draw 10 species at random a couple of times and calculate the artscore:</p>
-<div class="table" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800; overflow-x: scroll; width:500;  width: auto !important; margin-left: auto; margin-right: auto;">
+<p>In order to calculate the Artscore we need the list of species that
+we found in the field and the habitat type in which we collected it, as
+seen in the table bellow, the same species does not have the same value
+in different environments as an example we will use a list of species
+within the “Græs-indlandsklit (”Grass inland dune”)” habitat which in
+average has 9.4 species in its community, we will draw 10 species at
+random a couple of times and calculate the artscore:</p>
+<div class="table"
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800; overflow-x: scroll; width:500;  width: auto !important; margin-left: auto; margin-right: auto;">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
 <caption>
 List of species for our 10 random communities
@@ -1579,7 +1597,8 @@ Ulmus laevis
 </tbody>
 </table>
 </div>
-<p>With the Artscore package, the calculation is quite simple, we do it by using the following function, here it is for Community 1:</p>
+<p>With the Artscore package, the calculation is quite simple, we do it
+by using the following function, here it is for Community 1:</p>
 <pre class="r"><code>Artscore(ScientificName = c(&quot;Armeria maritima ssp. maritima&quot;, &quot;Campanula glomerata var. glomerata&quot;, 
 &quot;Campanula rapunculoides&quot;, &quot;Dipsacus pilosus&quot;, &quot;Hippophaë rhamnoides&quot;, &quot;Honckenya peploides&quot;, &quot;Juncus squarrosus&quot;, &quot;Leymus arenarius&quot;, 
 &quot;Sagina maritima&quot;, &quot;Stellaria nemorum ssp. nemorum&quot;), 
@@ -1651,22 +1670,47 @@ Artsindex
 </tr>
 </tbody>
 </table>
-<p>So we just type the list of species and the habitat name, but what do all the values in between mean?</p>
-<p>First we calculate <span class="math inline">\(m\)</span> which is the average of the artcore, this is coded as m in the results of our function</p>
-<p><span class="math display">\[{\displaystyle m=\frac {a_{1}+a_{2}+\cdots +a_{n}}{n}}\]</span> here <span class="math inline">\(n\)</span> is the number of species, and <span class="math inline">\(a_n\)</span> is the artscore of the nth species, in our example above the result is 4.</p>
-<p>Then we calculate <span class="math inline">\(a(b)\)</span> Which is the number of species with an Artscore value above 0 in our example above the result is 9, coded as a_b in the table above.</p>
+<p>So we just type the list of species and the habitat name, but what do
+all the values in between mean?</p>
+<p>First we calculate <span class="math inline">\(m\)</span> which is
+the average of the artcore, this is coded as m in the results of our
+function</p>
+<p><span class="math display">\[{\displaystyle m=\frac
+{a_{1}+a_{2}+\cdots +a_{n}}{n}}\]</span> here <span
+class="math inline">\(n\)</span> is the number of species, and <span
+class="math inline">\(a_n\)</span> is the artscore of the nth species,
+in our example above the result is 4.</p>
+<p>Then we calculate <span class="math inline">\(a(b)\)</span> Which is
+the number of species with an Artscore value above 0 in our example
+above the result is 9, coded as a_b in the table above.</p>
 <p>then we calculate</p>
-<p><span class="math inline">\(s\)</span> = Artsum calculated as follows:</p>
-<p><span class="math display">\[s = m \times a(b)\]</span> Then we get <span class="math inline">\(m(a)\)</span> from a table, this value is the mean of the averages of all <span class="math inline">\(m\)</span> calculated over several sites, this is coded as m_a in our table, in out case this is 3.61</p>
-<p>We then calculate the Artcore index <span class="math inline">\(A(s)\)</span> whish is calculated in the following way, and coded as A_s in our table:</p>
-<p><span class="math display">\[A(s) = \frac{1}{(1+e^{m(a)} \times e^{1.60(1-m)})}\]</span></p>
-<p><span class="math inline">\(a(t)\)</span> = number of plant species in the sample field (without mosses etc.), coded as a_t in the data frame</p>
-<p><span class="math inline">\(n(a)\)</span> = average number of species in the habitat type d = Diversity parameter calculated as follows :</p>
-<p><span class="math display">\[d = 0.8 \times m(a) \times n(a)\]</span></p>
-<p><span class="math inline">\(A(d)\)</span> = Artsdiversitetsindex calculated as follows:</p>
-<p><span class="math display">\[A(d) = (a(b)/a(t))*(1-(1/exp(s/d)))\]</span></p>
-<p>Artsindex = Species index (weighting of species score and species diversity index)</p>
-<p>We can them compare the index we have calculated against the second community, which would be the following:</p>
+<p><span class="math inline">\(s\)</span> = Artsum calculated as
+follows:</p>
+<p><span class="math display">\[s = m \times a(b)\]</span> Then we get
+<span class="math inline">\(m(a)\)</span> from a table, this value is
+the mean of the averages of all <span class="math inline">\(m\)</span>
+calculated over several sites, this is coded as m_a in our table, in out
+case this is 3.61</p>
+<p>We then calculate the Artcore index <span
+class="math inline">\(A(s)\)</span> whish is calculated in the following
+way, and coded as A_s in our table:</p>
+<p><span class="math display">\[A(s) = \frac{1}{(1+e^{m(a)} \times
+e^{1.60(1-m)})}\]</span></p>
+<p><span class="math inline">\(a(t)\)</span> = number of plant species
+in the sample field (without mosses etc.), coded as a_t in the data
+frame</p>
+<p><span class="math inline">\(n(a)\)</span> = average number of species
+in the habitat type d = Diversity parameter calculated as follows :</p>
+<p><span class="math display">\[d = 0.8 \times m(a) \times
+n(a)\]</span></p>
+<p><span class="math inline">\(A(d)\)</span> = Artsdiversitetsindex
+calculated as follows:</p>
+<p><span class="math display">\[A(d) =
+(a(b)/a(t))*(1-(1/exp(s/d)))\]</span></p>
+<p>Artsindex = Species index (weighting of species score and species
+diversity index)</p>
+<p>We can them compare the index we have calculated against the second
+community, which would be the following:</p>
 <pre class="r"><code>Artscore(ScientificName = c(&quot;Alchemilla vulgaris coll.&quot;, &quot;Alnus glutinosa&quot;, &quot;Cotoneaster niger&quot;, 
 &quot;Elytrigia atherica x juncea&quot;, &quot;Euphorbia cyparissias&quot;, &quot;Juncus alpinoarticulatus ssp. nodulosus&quot;, 
 &quot;Knautia arvensis&quot;, &quot;Nymphoides peltata&quot;, &quot;Quercus rubra&quot;, &quot;Reseda lutea&quot;), 
@@ -1776,7 +1820,8 @@ Comunity 2
 </tr>
 </tbody>
 </table>
-<p>So as we see in this example the Artsindex of the first community is</p>
+<p>So as we see in this example the Artsindex of the first community
+is</p>
 </div>
 
 
