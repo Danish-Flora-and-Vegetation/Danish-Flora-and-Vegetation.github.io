@@ -98,3 +98,52 @@ DF <- readRDS("Description1.rds")
 kable(DF) |> kableExtra::kable_material()
 ```
 
+# Question 2
+
+## "Could you give me a technical description of, Secies X, that would allow someone to differentiate it in the field?"
+
+Programatically this would be the way request it:
+
+```{r, eval = F}
+Description2 <- list()
+
+for(i in 1:length(Spp)){
+  parameters <- list(
+    prompt = paste("Could you give me a technical description of", Spp[i] ,"that would allow someone to differentiate it in the field?"),
+    temperature = 0.5,
+    max_tokens = 100,
+    top_p = 0.1,
+    frequency_penalty = 0.5,
+    presence_penalty = 0.5,
+    model = "curie"
+  )
+
+  # Send the request
+  response <- httr::POST(api_endpoint,
+                         httr::add_headers("Content-Type" = "application/json",
+                                           "Authorization" = paste0("Bearer ", api_key)),
+                         body = toJSON(parameters, auto_unbox = T)
+  )
+
+  # Check the status of the request
+  if (response$status_code != 200) {
+    stop("Error: ", response$status_code)
+  }
+
+  # Get the response
+  response_json <- jsonlite::fromJSON(content(response, as = "text"))
+
+  # Print the response
+  Description2[[i]] <- response_json$choices$text
+}
+
+DF2 <- data.frame(Species = Spp, description = purrr::reduce(Description2, c))
+```
+
+This results in the following table
+
+```{r, echo = F}
+DF2 <- readRDS("Description2.rds")
+
+kable(DF2) |> kableExtra::kable_material()
+```

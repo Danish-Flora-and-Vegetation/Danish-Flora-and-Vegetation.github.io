@@ -548,6 +548,201 @@ produces seeds that can be spread by birds and animals.
 </table>
 </div>
 </div>
+<div id="question-2" class="section level1">
+<h1>Question 2</h1>
+<div
+id="could-you-give-me-a-technical-description-of-secies-x-that-would-allow-someone-to-differentiate-it-in-the-field"
+class="section level2">
+<h2>“Could you give me a technical description of, Secies X, that would
+allow someone to differentiate it in the field?”</h2>
+<p>Programatically this would be the way request it:</p>
+<pre class="r"><code>Description2 &lt;- list()
+
+for(i in 1:length(Spp)){
+  parameters &lt;- list(
+    prompt = paste(&quot;Could you give me a technical description of&quot;, Spp[i] ,&quot;that would allow someone to differentiate it in the field?&quot;),
+    temperature = 0.5,
+    max_tokens = 100,
+    top_p = 0.1,
+    frequency_penalty = 0.5,
+    presence_penalty = 0.5,
+    model = &quot;curie&quot;
+  )
+
+  # Send the request
+  response &lt;- httr::POST(api_endpoint,
+                         httr::add_headers(&quot;Content-Type&quot; = &quot;application/json&quot;,
+                                           &quot;Authorization&quot; = paste0(&quot;Bearer &quot;, api_key)),
+                         body = toJSON(parameters, auto_unbox = T)
+  )
+
+  # Check the status of the request
+  if (response$status_code != 200) {
+    stop(&quot;Error: &quot;, response$status_code)
+  }
+
+  # Get the response
+  response_json &lt;- jsonlite::fromJSON(content(response, as = &quot;text&quot;))
+
+  # Print the response
+  Description2[[i]] &lt;- response_json$choices$text
+}
+
+DF2 &lt;- data.frame(Species = Spp, description = purrr::reduce(Description2, c))</code></pre>
+<p>This results in the following table</p>
+<table class=" lightable-material" style="font-family: &quot;Source Sans Pro&quot;, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species
+</th>
+<th style="text-align:left;">
+description
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Festuca rubra
+</td>
+<td style="text-align:left;">
+<p>The most important characters are the following:</p>
+<ol style="list-style-type: decimal">
+<li><p>The leaves are very narrow, with a length of less than 1
+cm.</p></li>
+<li><p>The leaves have a short petiole (less than 2 cm).</p></li>
+<li><p>The leaf blade is flat and has a length of less than 5 cm.</p>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<p>Agrostis capillaris</p>
+</td>
+<td style="text-align:left;">
+<p>A. The best way to tell the difference between A. capillaris and A.
+tenuis is to look at the leaves. In A. tenuis, the leaves are very
+narrow and have a very fine texture, whereas in A. capillaris, the
+leaves are wider and have a coarser texture (Figure 1).</p></li>
+</ol>
+<p>Figure 1: Leaves of Agrostis capillaris (left) and Agrostis tenuis
+(right).</p>
+Q
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Calluna vulgaris
+</td>
+<td style="text-align:left;">
+<p>I have a few questions about the Calluna vulgaris. I am trying to
+identify it in the field, but I can’t find any information on it. Could
+you give me a technical description of Calluna vulgaris that would allow
+someone to differentiate it in the field?</p>
+I have a few questions about the Calluna vulgaris. I am trying to
+identify it in the field, but I can’t find any information on it. Could
+you give me a technical description of Call
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Holcus lanatus
+</td>
+<td style="text-align:left;">
+Holcus lanatus is a perennial grass that grows to about 1.5 m tall. It
+has a tufted habit and the leaves are narrow, flat and have a long
+petiole. The inflorescence is panicle-like with many spikelets arranged
+in an open array. The spikelets are small, greenish-brown and have 2-3
+fertile florets which are surrounded by numerous sterile florets. The
+seeds are brown and very small (about 0.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Deschampsia flexuosa
+</td>
+<td style="text-align:left;">
+<p>The leaves of Deschampsia flexuosa are very narrow and have a very
+fine texture. The leaf margins are also very fine and the leaf surface
+is smooth. The flowers are small, yellowish green, and have a strong
+fragrance. The fruit is a capsule that opens at maturity to release the
+seeds.</p>
+What do you think of this plant? Do you have any questions about it?
+Share your thoughts in the comments section below!
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Poa pratensis
+</td>
+<td style="text-align:left;">
+I have a few questions about the identification of this plant. I am
+trying to identify it in the field, but I can’t find any information on
+it. It is a small plant with long, narrow leaves and tiny flowers. The
+leaves are very narrow and long, almost like those of a grass. The
+flowers are tiny and white with no petals or sepals. They are clustered
+together in small bunches at the top of the stem. The stems are very
+short and branch out
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rumex acetosa
+</td>
+<td style="text-align:left;">
+A. Rumex acetosa is a perennial, rhizomatous herb that grows in moist
+areas of the forest floor. It has a basal rosette of leaves and stems
+that are covered with fine hairs. The leaves are lance-shaped, 1 to 3
+inches long, and have a serrated margin. The flowers are small, white or
+pinkish-white, and borne in clusters at the ends of the stems. The fruit
+is a capsule containing many seeds.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Empetrum nigrum
+</td>
+<td style="text-align:left;">
+<p>I have a couple of Empetrum nigrum plants that I am trying to
+identify. They are growing in a pot and the leaves are very dark green,
+almost black. The flowers are white with a yellow center. I would like
+to know if they are different from other Empetrum species.</p>
+I have two plants that look like this one but they have no flowers and
+the leaves are not as dark green as yours. Could you tell me what kind
+of plant it is
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carex arenaria
+</td>
+<td style="text-align:left;">
+<p>I have a few plants in my garden that I think are Carex arenaria, but
+I’m not sure. They’re all about the same size and they all have the same
+kind of leaves. The only difference is that one has a little bit of a
+reddish tint to it.</p>
+<p>What’s the best way to propagate Carex arenaria?</p>
+It’s easy to propagate from seed. It’s also easy to propagate from
+cuttings, but you need to be
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cerastium fontanum
+</td>
+<td style="text-align:left;">
+<p>Cerastium fontanum is a small, low-growing, perennial herb with a
+woody base. The leaves are opposite and arranged in whorls of three. The
+flowers are borne in clusters at the ends of the branches. The flowers
+are white or pinkish-white and have five petals.</p>
+The plant grows to about 30 cm (12 inches) tall and has a basal rosette
+of leaves that can be up to 20 cm (8 inches)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 
 
 
