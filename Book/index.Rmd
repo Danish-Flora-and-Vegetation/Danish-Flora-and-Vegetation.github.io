@@ -1,0 +1,31 @@
+--- 
+title: "Danish Flora and Vegetation"
+author: "Signe Normand, Bjarke Madsen, Urs Trellier, Derek Corcoran"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  Accompaning gitbook to the Danish Flora and Vegetation course
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# About
+
+This is a _template_ book written for the Danish Flora and vegetation course.
+
+## Usage 
+
+Each chapter would be a week within the course, were the first weeks would be generalities about Danish flora (for example most common species in Denmark)
+
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
