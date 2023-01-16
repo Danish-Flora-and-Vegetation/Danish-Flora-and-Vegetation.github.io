@@ -1,0 +1,100 @@
+---
+title: "Test descriptions chatGPT"
+author: "Derek Corcoran"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = F,
+                      warning = F,
+                      error = F)
+```
+
+## Packages needed
+
+We will need the following packages
+
+```{r}
+library(httr)
+library(jsonlite)
+library(kableExtra)
+```
+
+## Authenticating and sending a query
+
+The first thing we need to do is to conect to the api, in order to do that we need a token
+
+```{r, eval = F}
+# Set the API endpoint and your API key
+api_endpoint <- "https://api.openai.com/v1/completions"
+api_key <- "XXXXXXXXXXX"
+```
+
+Then we generate a list of species for the model to describe:
+
+```{r}
+Spp <- c("Festuca rubra", "Agrostis capillaris", "Calluna vulgaris",
+         "Holcus lanatus", "Deschampsia flexuosa", "Poa pratensis",
+         "Rumex acetosa", "Empetrum nigrum", "Carex arenaria", "Cerastium fontanum")
+```
+
+Next we need to make a question I tried to different ones, lets see the descriptions for each of those:
+
+# Question 1
+
+## What are the characteristics of species x, that would allow someone to differentiate it in the field?
+
+Programatically this would be the way request it:
+
+
+```{r, eval=FALSE}
+# Define the parameters for your request
+# Here we are asking for the description of Festuca rubra
+
+Description <- list()
+
+for(i in 1:length(Spp)){
+  parameters <- list(
+    prompt = paste("What are the characteristics of", Spp[i] ,"that would allow someone to differentiate it in the field?"),
+    temperature = 0.5,
+    max_tokens = 100,
+    top_p = 0.1,
+    frequency_penalty = 0.5,
+    presence_penalty = 0.5,
+    model = "curie"
+  )
+
+  # Send the request
+  response <- httr::POST(api_endpoint,
+                         httr::add_headers("Content-Type" = "application/json",
+                                           "Authorization" = paste0("Bearer ", api_key)),
+                         body = toJSON(parameters, auto_unbox = T)
+  )
+
+  # Check the status of the request
+  if (response$status_code != 200) {
+    stop("Error: ", response$status_code)
+  }
+
+  # Get the response
+  response_json <- jsonlite::fromJSON(content(response, as = "text"))
+
+  # Print the response
+  Description[[i]] <- response_json$choices$text
+}
+
+DF <- data.frame(Species = Spp, description = purrr::reduce(Description, c))
+```
+
+This results in the following table
+
+```{r, echo = F}
+DF <- readRDS("Description1.rds")
+
+kable(DF) |> kableExtra::kable_material()
+```
+
