@@ -1,5 +1,5 @@
 ---
-title: "CRS triangle"
+title: "CSR triangle"
 output: html_document
 bibliography: Biblio.bib
 ---
@@ -36,12 +36,17 @@ Test <- readRDS("CRS_Per_Site.rds") %>%
   mutate_if(is.numeric, ~round(.x, 2)) %>% 
   rename(plot = Species)
 
+Habitat_Types <- read_delim("Habitat_Types.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE) |> 
+  mutate(MajorHabName =  iconv(MajorHabName, from="Windows-1252", to="UTF-8"), MajorHab = as.character(MajorHab)) 
+
 Spatial <- readRDS("MapAndnmds/Spatial.rds") %>% 
   dplyr::select(plot, habtype, MajorHab) %>% 
   dplyr::filter(plot %in% Test$plot) %>% 
   st_transform("+proj=longlat +datum=WGS84") %>% 
   right_join(Test) %>% 
-  distinct()
+  distinct() |> 
+  left_join(Habitat_Types)
 
 axis <- function(title) {
   
@@ -79,7 +84,7 @@ sd1 <- SharedData$new(Spatial, ~plot)
 ```{r plot, echo = FALSE, message=FALSE, warning=FALSE, error=FALSE}
 # Create a filter input
 filter_checkbox("Strategy", "Strategy", sd1, ~Strategy, inline = T)
-filter_checkbox("Major Habitar", "MajorHab", sd1, ~MajorHab, inline = T)
+filter_checkbox("Major Habitat", "MajorHabName", sd1, ~MajorHabName, inline = T)
 # Use SharedData like a dataframe with Crosstalk-enabled widgets
 bscols(#widths = c(7, 5),
   plot_ly(sd1) %>% 

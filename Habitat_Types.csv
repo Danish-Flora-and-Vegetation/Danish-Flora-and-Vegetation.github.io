@@ -1,0 +1,59 @@
+habtype;MajorHab;habitat_name;MajorHabName
+1100;11;NA;Vandareal
+1200;12;NA;Klit/Strand
+1210;12;NA;Klit/Strand
+1220;12;NA;Klit/Strand
+1230;12;NA;Klit/Strand
+1300;13;NA;Strandeng
+1310;13;NA;Strandeng
+1320;13;NA;Strandeng
+1330;13;Strandeng;Strandeng
+1340;13;Indlandssalteng;Strandeng
+2100;21;NA;Klit/Strand
+2110;21;NA;Klit/Strand
+2120;21;NA;Klit/Strand
+2130;21;Gr√•/gr√∏n klit;Klit/Strand
+2140;21;Klithede;Klit/Strand
+2160;21;NA;Klit/Strand
+2170;21;NA;Klit/Strand
+2180;21;Skovklit;Klit/Strand
+2190;21;Klitlavning;Klit/Strand
+2250;22;Eneb√¶rklit;Klit/Strand
+2300;23;NA;Klit/Strand
+2310;23;Visse-indlandsklit;Klit/Strand
+2320;23;Revling-indlandsklit;Klit/Strand
+2330;23;Gr√¶s-indlandsklit;Klit/Strand
+3100;31;NA;S¯
+3130;31;NA;S¯
+3260;32;NA;Vandl¯b
+4000;40;NA;Hede
+4010;40;V√•d hede;Hede
+4030;40;T√∏r hede;Hede
+5130;51;Enekrat;GrÊsland/Overdrev
+6120;61;T√∏rt kalkoverdrev;GrÊsland/Overdrev
+6200;62;NA;GrÊsland/Overdrev
+6210;62;Kalkoverdrev;GrÊsland/Overdrev
+6230;62;Surt overdrev;GrÊsland/Overdrev
+6400;64;NA;KÊr/Mose/Eng
+6410;64;Tidvis v√•d eng;KÊr/Mose/Eng
+6430;64;NA;KÊr/Mose/Eng
+7000;70;NA;KÊr/Mose/Eng
+7100;71;NA;KÊr/Mose/Eng
+7110;71;H√∏jmose;KÊr/Mose/Eng
+7120;71;Nedbrudt h√∏jmose;KÊr/Mose/Eng
+7140;71;H√¶nges√¶k;KÊr/Mose/Eng
+7150;71;T√∏rvelavning;KÊr/Mose/Eng
+7200;72;NA;KÊr/Mose/Eng
+7210;72;Avneknippemose;KÊr/Mose/Eng
+7220;72;Kildev√¶ld;KÊr/Mose/Eng
+7230;72;Rigk√¶r;KÊr/Mose/Eng
+8220;82;NA;Klipper
+9100;91;NA;Klipper
+9110;91;B√∏g p√• mor;Skov
+9120;91;B√∏g p√• mor med kristtorn;Skov
+9130;91;B√∏g p√• muld;Skov
+9150;91;B√∏g p√• kalk;Skov
+9190;91;Stilkege-krat;Skov
+9998;99;NA;NA
+9999;99;NA;NA
+NA;NA;NA;NA

@@ -15,9 +15,9 @@ navbar:
         href: MostCommon/MostCommon.html
       - text: "Calculating Artscore"
         href: Artscore.html
-      - text: "CRS strategies"
+      - text: "CSR strategies"
         href: CRSTables.html
-      - text: "Ellemberg values"
+      - text: "Ellenberg values"
         href: MapAndnmds/map.html
     - text: "Apps"
       icon: fa-gear
