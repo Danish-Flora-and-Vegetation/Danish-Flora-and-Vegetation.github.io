@@ -422,7 +422,7 @@ datatable(PerGenus, extensions = 'Buttons',
 
 Next week you will be learning about Ellenberg indicator values. For now you can explore the frequency of species with the different values in Denmark as seen in figure \@ref(fig:EllenbergHist)
 
-```{r EllenbergHist, fig.cap= "Histogram of Ellenberg values for different species in Denmark"}
+```{r EllenbergHist, fig.cap= "Histogram of Ellenberg values for different species in Denmark", results='asis'}
 G <- FinalDataset |> dplyr::select(species, dplyr::starts_with("eiv_")) |> dplyr::distinct()  |> tidyr::pivot_longer(dplyr::starts_with("eiv_"), names_to = "Ellenberg") |> dplyr::mutate(Ellenberg = stringr::str_remove_all(Ellenberg, "eiv_eres_")) |> dplyr::mutate(Ellenberg = stringr::str_to_upper(Ellenberg)) |> 
   dplyr::filter(!is.na(value)) |> ggplot(aes(x = value)) + facet_wrap(~Ellenberg, scales = 'free_y') +
   geom_histogram(binwidth = function(x) 2 * IQR(x) / (length(x)^(1/3)))
