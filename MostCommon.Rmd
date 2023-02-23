@@ -128,17 +128,18 @@ datatable(PerSpeciesPlot, extensions = 'Buttons',
 
 cat("<table>", paste0("<caption>",
                       "(#tab:SpeciesPerPlot)",
-                      "caption",
                       "Species ordered by family and number of occurrences.",
                       "</caption>"),
                       "</table>", sep ="\n")
 ```
 
-You can also explore the following interactive plot, you can choose to show all families, or click on any of the ones which has one of the 500 most common species to get an overview of their composition, and check the number of occurrence per species, by hovering over the plot.
+## Observations within families
 
-You can play with the controls wher you can download the images or the data within the graph.
+You can also explore the following interactive plot in figure \@ref(fig:HCplot), you can choose to show all families, or click on any of the ones which has one of the 500 most common species to get an overview of their composition, and check the number of occurrence per species, by hovering over the plot.
 
-```{r HCplot}
+You can play with the controls where you can download the images or the data within the graph.
+
+```{r HCplot, results='asis', fig.cap="Number of occurrences per family, and species within those families."}
 library(highcharter)
 PerSpeciesHCAll2 <- PerSpeciesPlot %>% 
   ungroup() %>% 
@@ -190,6 +191,9 @@ hchart(dout, type = "treemap",
     enabled = TRUE, # always enabled
     filename = "custom-file-name"
   )
+
+cat("<figure>", paste0("(#fig:HCplot)"),
+                      "</figure>", sep ="\n")
 
 ```
 
