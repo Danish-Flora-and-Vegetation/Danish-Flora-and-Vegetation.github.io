@@ -10,7 +10,7 @@ navbar:
       menu:
       - text: "Activities"
       - text: "Most Common Species in Denmark"
-        href: MostCommon/MostCommon.html
+        href: MostCommon.html
       - text: "Calculating Artscore"
         href: Artscore.html
       - text: "CSR strategies"
