@@ -118,6 +118,8 @@ If we take into account how many plots a species has been detected at leas once,
 ```{r SpeciesPerPlot, results='asis'}
 
 datatable(PerSpeciesPlot, extensions = 'Buttons',
+                    caption = cat('<table style="width:100%">',paste0("<caption>", "(#tab:SpeciesPerPlot)",
+                      "Species ordered by family and number of occurrences.", "</caption>"),"</table>", sep ="\n"),
             filter = "top",
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
@@ -128,11 +130,6 @@ datatable(PerSpeciesPlot, extensions = 'Buttons',
     backgroundColor = styleInterval(100, c('green', 'gray'))
   )
 
-cat("<table>", paste0("<caption>",
-                      "(#tab:SpeciesPerPlot)",
-                      "Species ordered by family and number of occurrences.",
-                      "</caption>"),
-                      "</table>", sep ="\n")
 ```
 
 ## Observations within families
@@ -359,12 +356,11 @@ We can see the number of species per family in a decreasing order in table \@ref
 
 
 datatable(PerFamily, extensions = 'Buttons',
+          caption = cat('<table style="width:100%">',paste0("<caption>", "(#tab:SpeciesPerFamily)", " Families ordered by the number of species they have.", "</caption>", "</caption>"),"</table>", sep ="\n"),
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All"))))
-
-cat("<table>",paste0("<caption>", "(#tab:SpeciesPerFamily)", "caption", " Families ordered by the number of species they have.", "</caption>"),"</table>", sep ="\n")
 ```
 
 Again, in the figure \@ref(fig:PerFamily), play around with the graph, to check the distribution of the species number, zoom in and out, and explore the families with most and least amount of species
@@ -382,7 +378,7 @@ The number of species per genus can be seen in table \@ref(tab:SpeciesPerGenus):
 ```{r SpeciesPerGenus, results='asis'}
 
 datatable(PerGenus, extensions = 'Buttons',
-          caption = cat('<table style="width:100%">',paste0("<caption>", "(#tab:SpeciesPerGenus)", "caption", "Genera ordered by the number of species they have.", "</caption>"),"</table>", sep ="\n"),
+          caption = cat('<table style="width:100%">',paste0("<caption>", "(#tab:SpeciesPerGenus)", "Genera ordered by the number of species they have.", "</caption>"),"</table>", sep ="\n"),
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
                            lengthMenu = list(c(10,25,50,-1),
