@@ -14,7 +14,39 @@ library(data.table)
 library(janitor)
 library(DT)
 
+FinalDataset <- readRDS("MostCommon/Final_dataset.rds") |> 
+  mutate_if(is.numeric, ~10*(.x/max(.x, na.rm = T)))
+
 Home <- getwd()
+
+mostFrequentSpecies <- readRDS("MostCommon/FrekWithElenberg.rds") |> ungroup() |> dplyr::select(-plot, -year) |> dplyr::group_by_all() |> summarise(Number = n()) |> arrange(desc(Number)) |> ungroup() |>  mutate_at(.vars = vars(m:ratio_n_r),  ~10*(.x/max(.x, na.rm = T)))|> mutate_at(.vars = vars(m:ratio_n_r), round) |> pivot_longer(cols = c(m:ratio_n_r), names_to = "Ellenberg") |> dplyr::filter(!is.na(value)) |> ungroup() |> group_by(Ellenberg, value) |> dplyr::filter(Number == max(Number)) |> arrange(Ellenberg, value)
+
+Danish_Names <- readRDS("MostCommon/Final_dataset.rds") |> 
+  dplyr::select(NavnDansk, canonicalName, species)
+
+Totals <- readRDS("MostCommon/Final_dataset.rds") |> dplyr::select(canonicalName, species, starts_with("eiv_eres_")) |> mutate_if(is.numeric, round) |> dplyr::distinct() |> pivot_longer(cols = starts_with("eiv_eres_"), names_to = "Ellenberg") |> mutate(Ellenberg = stringr::str_remove_all(Ellenberg,"eiv_eres_")) |> dplyr::filter(!is.na(value)) |> ungroup() |> group_by(Ellenberg) |> summarise(Total = n()) 
+
+PropSpeciesPerValue <- readRDS("MostCommon/Final_dataset.rds")  |> dplyr::select(canonicalName, species, starts_with("eiv_eres_")) |> ungroup() |> dplyr::distinct() |> dplyr::group_by_all() |> ungroup() |> mutate_at(.vars = vars(eiv_eres_m:eiv_eres_ratio_n_r), round) |> pivot_longer(cols = c(eiv_eres_m:eiv_eres_ratio_n_r), names_to = "Ellenberg") |> mutate(Ellenberg = stringr::str_remove_all(Ellenberg,"eiv_eres_")) |> dplyr::filter(!is.na(value)) |> ungroup() |> group_by(Ellenberg, value) |> summarise(n_species = n()) |> full_join(Totals) |> ungroup() |> mutate(percentage = round(100*n_species/Total,2)) |> 
+  dplyr::select(-n_species, -Total) |> 
+  full_join(mostFrequentSpecies) |> 
+  left_join(Danish_Names) |> dplyr::select(Ellenberg, value, percentage, NavnDansk, species)
+
+PropSpeciesPerValue_Ready <- PropSpeciesPerValue |> dplyr::filter(!is.na(species))
+
+PropSpeciesPerValue_Missing <- PropSpeciesPerValue |> dplyr::filter(is.na(species)) |> 
+  dplyr::select(-NavnDansk, -species)
+
+set.seed(2023)
+
+To_Fill <- PropSpeciesPerValue <- readRDS("MostCommon/Final_dataset.rds")  |> dplyr::select(canonicalName, species, starts_with("eiv_eres_")) |> ungroup() |> dplyr::distinct() |> dplyr::group_by_all() |> ungroup() |> mutate_at(.vars = vars(eiv_eres_m:eiv_eres_ratio_n_r), round) |> pivot_longer(cols = c(eiv_eres_m:eiv_eres_ratio_n_r), names_to = "Ellenberg") |> mutate(Ellenberg = stringr::str_remove_all(Ellenberg,"eiv_eres_")) |> dplyr::filter(!is.na(value)) |> 
+  ungroup() |> 
+  dplyr::right_join(PropSpeciesPerValue_Missing) |> 
+  dplyr::select("Ellenberg", "value", "percentage", "species") |> 
+  group_by(Ellenberg, value) |> 
+  slice_sample(n = 1) |> 
+  ungroup()
+
+PropSpeciesPerValue <- bind_rows(PropSpeciesPerValue_Ready, To_Fill) |> arrange(Ellenberg, value)
 
 setwd("MostCommon/")
 
@@ -385,7 +417,21 @@ datatable(PerGenus, extensions = 'Buttons',
                                              c(10,25,50,"All"))))
 ```
 
+
+# Ellenberg values
+
+Next week you will be learning about Ellenberg indicator values. For now you can explore the frequency of species with the different values in Denmark as seen in figure \@ref(fig:EllenbergHist)
+
+```{r EllenbergHist, fig.cap= "Histogram of Ellenberg values for different species in Denmark"}
+G <- FinalDataset |> dplyr::select(species, dplyr::starts_with("eiv_")) |> dplyr::distinct()  |> tidyr::pivot_longer(dplyr::starts_with("eiv_"), names_to = "Ellenberg") |> dplyr::mutate(Ellenberg = stringr::str_remove_all(Ellenberg, "eiv_eres_")) |> dplyr::mutate(Ellenberg = stringr::str_to_upper(Ellenberg)) |> 
+  dplyr::filter(!is.na(value)) |> ggplot(aes(x = value)) + facet_wrap(~Ellenberg, scales = 'free_y') +
+  geom_histogram(binwidth = function(x) 2 * IQR(x) / (length(x)^(1/3)))
+
+plotly::ggplotly(G)
+```
+
+As Danish flora is skewed in certain indicators
+
 ```{r}
 setwd(Home)
 ```
-
