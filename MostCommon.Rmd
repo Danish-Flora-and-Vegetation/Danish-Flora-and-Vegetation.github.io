@@ -435,7 +435,7 @@ You can see how for certain indicators such as L and R this values are heavily s
 In table \@ref(tab:EllenbergTable) you can see the percentage of species that are within an ellenberg value as well as the most common species having that value. 
 
 ```{r EllenbergTable}
-datatable(PerFamily, extensions = 'Buttons',
+datatable(PropSpeciesPerValue, extensions = 'Buttons',
           caption = cat('<table style="width:100%">',paste0("<caption>", "(#tab:EllenbergTable)", "Percentage of species in Denmark with an ellenberg value. Also shows the most common species with that value as an example.", "</caption>", "</caption>"),"</table>", sep ="\n"),
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
