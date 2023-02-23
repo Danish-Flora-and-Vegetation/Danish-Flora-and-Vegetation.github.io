@@ -354,7 +354,7 @@ plot_ly() %>%
 
 We can see the number of species per family in a decreasing order in table \@ref(tab:SpeciesPerFamily)
 
-```{r SpeciesPerFamily}
+```{r SpeciesPerFamily, results='asis'}
 ## number of species per family
 
 
@@ -364,16 +364,12 @@ datatable(PerFamily, extensions = 'Buttons',
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All"))))
 
-cat("<table>", paste0("<caption>",
-                      "(#tab:SpeciesPerFamily)",
-                      "Families ordered by the number of species they have.",
-                      "</caption>"),
-                      "</table>", sep ="\n")
+cat("<table>",paste0("<caption>", "(#tab:SpeciesPerFamily)", "caption", " Families ordered by the number of species they have.", "</caption>"),"</table>", sep ="\n")
 ```
 
-Again, in the following plot, play around with the graph, to check the distribution of the species number, zoom in and out, and explore the families with most and least amount of species
+Again, in the figure \@ref(fig:PerFamily), play around with the graph, to check the distribution of the species number, zoom in and out, and explore the families with most and least amount of species
 
-```{r}
+```{r PerFamily, fig.cap= "Number of species per family"}
 plotly::ggplotly(ggplot(PerFamily, aes(x = reorder(Family, desc(Species_number)), y = Species_number)) + geom_col() + theme_bw() + labs(x = "Family", y = "Speceis Number") + theme(axis.text.x = element_blank(), axis.ticks =element_blank()))
 ```
 
@@ -381,12 +377,12 @@ plotly::ggplotly(ggplot(PerFamily, aes(x = reorder(Family, desc(Species_number))
 
 ## Number of species per Genus
 
-The number of species per genus is as follows:
+The number of species per genus can be seen in table \@ref(tab:SpeciesPerGenus):
 
-```{r SpeciesPerGenus}
+```{r SpeciesPerGenus, results='asis'}
 
 datatable(PerGenus, extensions = 'Buttons',
-          caption = 'Table 3: Genera ordered by the number of species they have.',
+          caption = cat('<table style="width:100%">',paste0("<caption>", "(#tab:SpeciesPerGenus)", "caption", "Genera ordered by the number of species they have.", "</caption>"),"</table>", sep ="\n"),
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
                            lengthMenu = list(c(10,25,50,-1),
