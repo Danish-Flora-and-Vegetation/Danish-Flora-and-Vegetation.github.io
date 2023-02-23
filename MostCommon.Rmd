@@ -14,6 +14,8 @@ library(data.table)
 library(janitor)
 library(DT)
 
+Home <- getwd()
+
 setwd("MostCommon/")
 
 Artlist <- data.table::fread("artsliste.csv") %>% 
@@ -199,7 +201,7 @@ cat("<figure>", paste0("(#fig:HCplot)"),
 
 Also in the following figure \@ref(fig:ThePlot), you can check the distribution of the species occurrences abundance, note the distribution of rare and common species, you can zoom in and out, and hover over the bars to identify the species. You can also download the image using the camera icon
 
-```{r ThePlot, fig.cap= "Number of species with "}
+```{r ThePlot, fig.cap= "Number of occurrences by species with a focus on rarity and commonality"}
 library(plotly)
 
 plot_ly() %>%
@@ -350,18 +352,23 @@ plot_ly() %>%
 
 ## Number of species per family
 
-The number of species per family in a decreasing order are as follows:
+We can see the number of species per family in a decreasing order in table \@ref(tab:SpeciesPerFamily)
 
 ```{r SpeciesPerFamily}
 ## number of species per family
 
 
 datatable(PerFamily, extensions = 'Buttons',
-          caption = 'Table 2: Families ordered by the number of species they have.',
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All"))))
+
+cat("<table>", paste0("<caption>",
+                      "(#tab:SpeciesPerFamily)",
+                      "Families ordered by the number of species they have.",
+                      "</caption>"),
+                      "</table>", sep ="\n")
 ```
 
 Again, in the following plot, play around with the graph, to check the distribution of the species number, zoom in and out, and explore the families with most and least amount of species
@@ -385,3 +392,8 @@ datatable(PerGenus, extensions = 'Buttons',
                            lengthMenu = list(c(10,25,50,-1),
                                              c(10,25,50,"All"))))
 ```
+
+```{r}
+setwd(Home)
+```
+
