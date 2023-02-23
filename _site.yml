@@ -5,8 +5,6 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Book"
-      href: Book/_book/index.html
     - text: "Activities"
       icon: fa-gear
       menu:
@@ -23,6 +21,6 @@ navbar:
       icon: fa-gear
       menu:
       - text: "Apps"
-      - text: "Plot comparison app"
+      - text: "Mock Exam app"
         href: PlotShinyApps.html
 
