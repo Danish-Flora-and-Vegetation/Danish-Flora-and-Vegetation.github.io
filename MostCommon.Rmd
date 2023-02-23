@@ -197,9 +197,9 @@ cat("<figure>", paste0("(#fig:HCplot)"),
 
 ```
 
-Also in the following interactive plot, you can check the distribution of the species occurrences abundance, note the distribution of rare and common species, you can zoom in and out, and hover over the bars to identify the species. You can also download the image using the camera icon
+Also in the following figure \@ref(fig:ThePlot), you can check the distribution of the species occurrences abundance, note the distribution of rare and common species, you can zoom in and out, and hover over the bars to identify the species. You can also download the image using the camera icon
 
-```{r ThePlot}
+```{r ThePlot, fig.cap= "Number of species with "}
 library(plotly)
 
 plot_ly() %>%
