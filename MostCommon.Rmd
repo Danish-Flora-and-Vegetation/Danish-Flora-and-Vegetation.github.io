@@ -1,9 +1,10 @@
 ---
 title: "Most common species in natural areas of Denmark"
 output:
-  html_document:
+  bookdown::html_document2:
+    code_folding: hide
+    fig_caption: true
     toc: true
-    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -104,17 +105,17 @@ FamNames <- PerSpeciesFamiliesPlotly$Family %>% unique() %>% sort()
 df <- PerSpeciesFamiliesPlotly
 ```
 
-# Introduction 
+# Introduction
+
 In this exercise we are characterizing the most common species found in the Danish monitoring program NOVANA (Nationale Overvågningsprogram for Vand og Natur). The data observations includes `r prettyNum(nrow(frekvens2),big.mark = ".", decimal.mark = ",")` samples in `r prettyNum(length(unique(frekvens2$site)),big.mark = ".", decimal.mark = ",")` sites, and `r prettyNum(length(unique(frekvens2$plot)),big.mark = ".", decimal.mark = ",")` plots sampled from `r min(frekvens2$year)`, till `r max(frekvens2$year)`. This includes `r prettyNum(length(unique(frekvens2$LatArt)),big.mark = ".", decimal.mark = ",")` that have been sampled at least once.
 
 ## Number of plots per species
 
-If we take into account in how many plots a species has been detected at list once, this is the list of the species in Denmark ordered by the number of occurrences it has, note that using the search bar you can search for only one family. You can also download this list or any other table within this document with the buttons above, as well as set the number of species to be shown, you can see 100 most common species in red letters and yellow background.
+If we take into account how many plots a species has been detected at leas once, you can see in table \@ref(tab:SpeciesPerPlot) the list of the species in Denmark ordered by the number of occurrences it has, note that using the search bar you can search for only one family. You can also download this list or any other table within this document with the buttons above, as well as set the number of species to be shown, you can see 100 most common species in red letters and yellow background.
 
-```{r SpeciesPerPlot}
+```{r SpeciesPerPlot, results='asis'}
 
 datatable(PerSpeciesPlot, extensions = 'Buttons',
-          caption = 'Table 1: Species ordered by family and number of occurrences.',
             filter = "top",
             options = list(dom = 'Blfrtip',
                            buttons = c('copy', 'csv', 'excel'),
@@ -124,6 +125,13 @@ datatable(PerSpeciesPlot, extensions = 'Buttons',
     color = styleInterval(100, c('white', 'white')),
     backgroundColor = styleInterval(100, c('green', 'gray'))
   )
+
+cat("<table>", paste0("<caption>",
+                      "(#tab:SpeciesPerPlot)",
+                      "caption",
+                      "Species ordered by family and number of occurrences.",
+                      "</caption>"),
+                      "</table>", sep ="\n")
 ```
 
 You can also explore the following interactive plot, you can choose to show all families, or click on any of the ones which has one of the 500 most common species to get an overview of their composition, and check the number of occurrence per species, by hovering over the plot.
